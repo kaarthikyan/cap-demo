@@ -8,6 +8,7 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import Chat from '@/components/Chat';
 
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const token = (await cookies()).get('token')?.value;
@@ -33,10 +34,15 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
                 <p className="text-center text-gray-400 dark:text-white/60">
                   Application to view ERM dashbords
                 </p>
+               
+                <div>
+                   {/* <h1 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray">How may I help you!</h1> */}
+                   <Chat />
+                 </div>
               </div>
             </div>
           </div>
-          <div className="fixed bottom-6 right-6 z-50 hidden sm:block">
+          <div className="fixed top-6 right-6 z-50 hidden sm:block">
             <ThemeTogglerTwo />
           </div>
         </div>
