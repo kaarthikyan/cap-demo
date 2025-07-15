@@ -18,6 +18,7 @@ import { RabbitMQConsumerController } from './rabbitmq/rabbitmq-consumer.control
 import { RabbitMQTestController } from './rabbitmq/rabbitmq-test.controller';
 import { RabbitMQProducerService } from './rabbitmq/rabbitmq-producer.service';
 import { EmailService } from './email/email.service';
+import { ChatGateway } from './chat/chat.gateway';
 @Module({
   imports: [
     WinstonModule.forRoot(apiLoggerOptions),
@@ -68,7 +69,8 @@ import { EmailService } from './email/email.service';
     UserService,
     SchedulerService,
     RabbitMQProducerService,
-    EmailService
+    EmailService,
+    ChatGateway,
   ],
 })
 export class AppModule { }
