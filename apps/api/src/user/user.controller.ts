@@ -13,12 +13,15 @@ import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
     @Get()
+    @ApiOperation({ summary: 'Get current user' })
     async getUser(@Req() req: Request, @Res() res: Response) {
         const token = req.cookies?.token;
         if (!token) {

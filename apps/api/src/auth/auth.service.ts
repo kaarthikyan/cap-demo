@@ -8,16 +8,24 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from '../models/user.model'; // adjust path as per your structure
 import { SignupDto } from './dto/signup.dto';
 import { CreationAttributes } from 'sequelize';
+import { Logger } from 'winston';
+import { Inject } from '@nestjs/common';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { RabbitMQProducerService } from '../rabbitmq/rabbitmq-producer.service';
 
 @Injectable()
 export class AuthService {
-
-    constructor(@InjectModel(User) private userModel: typeof User) { }
+    constructor(
+        @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
+        @InjectModel(User) private userModel: typeof User,
+        private readonly rabbitMQProducer: RabbitMQProducerService
+    ) {}
 
     async signIn({ email, password }: SignInDto): Promise<string> {
         const user = await this.userModel.findOne({ where: { email } });
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
+            this.logger.error('Invalid credentials', { email });
             throw new Error('Invalid credentials');
         }
 
@@ -71,6 +79,17 @@ export class AuthService {
             bio: 'Team Manager',
         } as CreationAttributes<User>);
 
+        await this.rabbitMQProducer.sendMessage({
+            event: 'user_created',
+            data: {
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+            },
+        });
+
+
+        // this.logger.info('User created successfully', { email });
         return 'User created successfully';
     }
 }
