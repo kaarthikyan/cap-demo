@@ -9,6 +9,7 @@ import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Chat from '@/components/Chat';
+import I18nPanel from '@/components/I18nPanel';
 
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const token = (await cookies()).get('token')?.value;
@@ -31,10 +32,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
                 <Link href="/" className="block mb-4">
                   <Image width={231} height={48} src="./images/logo/auth-logo.svg" alt="Logo" />
                 </Link>
-                <p className="text-center text-gray-400 dark:text-white/60">
-                  Application to view ERM dashbords
-                </p>
-               
+               <I18nPanel />
                 <div>
                    {/* <h1 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray">How may I help you!</h1> */}
                    <Chat />
