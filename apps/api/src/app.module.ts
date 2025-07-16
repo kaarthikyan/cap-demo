@@ -19,6 +19,7 @@ import { RabbitMQTestController } from './rabbitmq/rabbitmq-test.controller';
 import { RabbitMQProducerService } from './rabbitmq/rabbitmq-producer.service';
 import { EmailService } from './email/email.service';
 import { ChatGateway } from './chat/chat.gateway';
+import { FallbackController } from './common/controllers/fallback.controller';
 @Module({
   imports: [
     WinstonModule.forRoot(apiLoggerOptions),
@@ -61,7 +62,8 @@ import { ChatGateway } from './chat/chat.gateway';
     NotificationsController,
     UserController,
     RabbitMQConsumerController,
-    RabbitMQTestController
+    RabbitMQTestController,
+    FallbackController, // Ensure FallbackController is imported
   ],
   providers: [
     AuthService,
